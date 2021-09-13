@@ -54,7 +54,11 @@ def _obsolete_line_fold(lines):
 
 def _decode_header_lines(lines):
     for line in _obsolete_line_fold(lines):
-        matches = validate(header_field_re, line, "illegal header line: {!r}", line)
+        matches = header_field_re.fullmatch(line)
+        if not matches:
+            continue  # Drop most invalid incoming headers 
+        if matches["invalid_whitespace"] != "":
+            raise LocalProtocolError("illegal header line: {!r}".format(line))
         yield (matches["field_name"], matches["field_value"])
 
 

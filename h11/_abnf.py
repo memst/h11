@@ -63,6 +63,7 @@ field_value = r"({field_content})?".format(**globals())
 #  header-field   = field-name ":" OWS field-value OWS
 header_field = (
     r"(?P<field_name>{field_name})"
+    r"(?P<invalid_whitespace>{OWS})" # Catch separately
     r":"
     r"{OWS}"
     r"(?P<field_value>{field_value})"
